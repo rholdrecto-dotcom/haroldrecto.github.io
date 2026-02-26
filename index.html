@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harold Recto | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0; 
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #e0f2f7;
+      color: #333;
+      display: flex;
+      flex-direction: column; 
+      min-height: 100vh;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 10%;
+      align-items: center;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      font-weight: 900;
+    }
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #666;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    nav a:hover { color: #000; }
+    
+    section {
+      display: none;
+      padding: 60px 5%;
+      flex: 1;
+    }
+    section.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .content-wrapper {
+      max-width: 1200px;
+      margin: auto;
+    }
+    
+    
+    .hero-wrapper {
+      display: flex;
+      gap: 50px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    .hero-text { flex: 2; }
+    .hero-text h2 { font-size: 2.5rem; margin-bottom: 15px; }
+    .hero-image img {
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .slider-container {
+      position: relative;
+      max-width: 800px;
+      margin: 40px auto;
+      overflow: hidden;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .slide {
+      display: none;
+      padding: 40px;
+      text-align: center;
+    }
+    .slide.active {
+      display: block;
+      animation: slideEffect 0.5s ease-in-out;
+    }
+    @keyframes slideEffect {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .value-item h4 { font-size: 1.8rem; margin-bottom: 10px; color: #222; }
+    .value-card-img {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 20px;
+      z-index: 10;
+    }
+    .prev { left: 20px; }
+    .next { right: 20px; }
+
+    .about-box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      display: flex;
+      gap: 50px;
+      align-items: center;
+    }
+    .about-image img {
+  width: 220px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 4px solid lightblue;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .info-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    .info-table td { padding: 8px 0; font-size: 1rem; }
+    .info-label { font-weight: bold; color: #555; width: 150px; }
+
+    .main-goal-card {
+      background: white;
+      padding: 60px 40px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      text-align: left;
+    }
+    .goal-text { flex: 1.5; }
+    .goal-image { flex: 1; text-align: center; }
+    .goal-image img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+    .skill-card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border-bottom: 5px solid #2e5a88;
+    }
+    .skill-card h3 { margin-bottom: 15px; color: #2e5a88; display: flex; align-items: center; gap: 10px; }
+    .skill-card ul { list-style: none; padding: 0; line-height: 2; }
+    .skill-card ul li i { color: #27ae60; width: 25px; text-align: center; }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .project-item {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .tech-stack span {
+      font-size: 0.7rem; background: #f0f0f0;
+      padding: 5px 10px; border-radius: 5px; margin-right: 5px; font-weight: bold;
+    }
+    .btn-link {
+      display: inline-block; padding: 10px 15px;
+      background: #333; color: white; text-decoration: none;
+      border-radius: 5px; text-align: center; margin-top: 15px; font-weight: bold;
+    }
+
+    footer { background: #333; color: white; text-align: center; padding: 20px 10%; margin-top: auto; }
+
+    @media (max-width: 900px) {
+      .hero-wrapper, .about-box, .main-goal-card { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">HAROLD RECTO</div>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('goals')">Goal</a>
+    <a onclick="showPage('projects')">Projects</a>
+    <a onclick="showPage('skills')">Skills&Hobbies</a>
+    <a onclick="showPage('work-experience')">Experience</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+</header>
+
+<section id="home" class="active">
+  <div class="content-wrapper">
+    <div class="hero-wrapper">
+      <div class="hero-text">
+        <h2>Personal Introduction</h2>
+        <p>Hello! I'm Harold Recto, a dedicated BSIT student at RSU-SFC. I am passionate about technology and building creative digital experiences.</p>
+      </div>
+      <div class="hero-image">
+        <img src="images/profile.jpg" alt="Profile">
+      </div>
+    </div>
+    <h2 style="text-align:center; margin-top: 40px;">Core Values</h2>
+    <div class="slider-container">
+      <div class="slides">
+        <div class="slide active">
+          <div class="value-item">
+            <h4>Ambition</h4>
+            <p>Eager to master modern technologies and push the limits of what's possible.</p>
+            <img src="https://picsum.photos/id/180/800/400" class="value-card-img">
+          </div>
+        </div>
+        <div class="slide"> 
+          <div class="value-item">
+            <h4>Resilience</h4>
+            <p>Every challenge is an opportunity to grow and learn from mistakes.</p>
+            <img src="https://picsum.photos/id/160/800/400" class="value-card-img">
+          </div>
+        </div>
+        <div class="slide">
+          <div class="value-item">
+            <h4>Passion</h4>
+            <p>A deep love for creating digital solutions that make an impact.</p>
+            <img src="https://picsum.photos/id/20/800/400" class="value-card-img">
+          </div>
+        </div>
+      </div>
+      <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+      <button class="next" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="content-wrapper">
+    <div class="about-box">
+      <div class="about-image">
+        <img src="harold.jpg" alt="About">
+       </div>
+      <div>
+        <h2>About Me</h2>
+        <p>I am an IT student at Romblon State University - San Fernando Campus. Beyond my technical studies, my experience in various industries has instilled in me a sense of discipline and work efficiency.</p>
+        <table class="info-table">
+          
+        </table>
+      </div>
+    </div>
+  </div>
+</section>  
+
+<section id="goals">
+  <div class="content-wrapper">
+    <div class="main-goal-card">
+      <div class="goal-text">
+        <h2>My Goal</h2>
+        <p style="font-size: 1.5rem; color: #555; font-style: italic; margin-bottom: 20px;">"To become the person they never expected me to be."</p>
+        <p>From optimizing production lines in manufacturing and cooking to building efficient lines of code. My goal is to combine the precision of industry experience with the innovation of Information Technology.</p>
+        <p style="margin-top:15px;">I believe that it’s never too late to pivot. My journey from the kitchen to the keyboard is a testament to my resilience and hunger for continuous improvement.</p>
+      </div>
+      <div class="goal-image">
+        <img src="sunset.jpg" alt="Goal Photo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="content-wrapper">
+    <h2 style="text-align:center;">My Projects</h2>
+    <div class="project-list">
+      <div class="project-item" style="border: 2px solid #2e5a88; box-shadow: 0 8px 15px rgba(46, 90, 136, 0.2);">
+        <div>
+          <div style="background: #2e5a88; color: white; padding: 3px 8px; font-size: 0.65rem; border-radius: 4px; display: inline-block; margin-bottom: 10px;">CAPSTONE PROJECT</div>
+          <h3>Inilingua Language Platform</h3>
+          <p>A comprehensive system designed for language learning and communication excellence. Developed as a major requirement for BSIT.</p>
+          <div class="tech-stack"><span>Web Dev</span> <span>Integration</span></div>
+        </div>
+        <a href="https://inilingua.com/" target="_blank" class="btn-link" style="background: #2e5a88;">View Live Project</a>
+      </div>
+      <div class="project-item">
+        <div>
+          <h3>Personal Portfolio</h3>
+          <p>A responsive website showcasing my career history, values, and IT skills.</p>
+          <div class="tech-stack"><span>HTML</span> <span>CSS</span> <span>JS</span></div>
+        </div>
+        <a href="#" class="btn-link">View Details</a>
+      </div>
+      <div class="project-item">
+        <div>
+          <h3>Arithmetic Tool</h3>
+          <p>A functional calculator app built to practice core JavaScript logic.</p>
+          <div class="tech-stack"><span>HTML</span> <span>CSS</span> <span>JS</span></div>
+        </div>
+        <a href="#" class="btn-link">View Details</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="content-wrapper">
+    <h2 style="text-align:center; margin-bottom: 30px;">Core Competencies</h2>
+
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <h3>Technical Skills</h3>
+        <ul>
+          <li>HTML5 & CSS3 (Responsive Design)</li>
+          <li>JavaScript Fundamentals</li>
+          <li>Basic DOM Manipulation</li>
+          <li>Web Layout Structuring</li>
+          <li>Basic Troubleshooting & Debugging</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h3>Professional Strengths</h3>
+        <ul>
+          <li>Analytical Thinking</li>
+          <li>Problem-Solving Under Pressure</li>
+          <li>Process Optimization</li>
+          <li>Team Collaboration</li>
+          <li>Adaptability in Fast-Paced Environments</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <h3>Personal Interests</h3>
+        <ul>
+          <li>Cooking (Precision & Process Discipline)</li>
+          <li>Farming (Patience & Long-Term Planning)</li>
+          <li>Fishing (Focus & Strategic Thinking)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="work-experience">
+  <div class="content-wrapper">
+    <h2 style="text-align:center; margin-bottom: 30px;">Work Experience</h2>
+    <div class="project-list">
+
+      <div class="project-item">
+        <img src="factory.png" alt="Fibisco" style="width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:15px;">
+        <span style="color: #666; font-size: 0.8rem; font-weight: bold;">AUG 2020 - JAN 2021</span>
+        <h3>Factory Worker/Machine Operator</h3>
+        <p><strong>COMFOODS - Fibisco</strong></p>
+        <ul class="experience-desc">
+          <li>Operated automated production systems requiring technical monitoring.</li>
+          <li>Performed structured troubleshooting to prevent downtime.</li>
+          <li>Maintained machine performance documentation and safety standards.</li>
+          <li>Strengthened analytical and problem-solving skills in a high-pressure environment.</li>
+        </ul>
+      </div>
+
+      <div class="project-item">
+        <img src="shrimp.jpg".jpg" alt="Shrimp Bucket" style="width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:15px;">
+        <span style="color: #666; font-size: 0.8rem; font-weight: bold;">NOV 2019 - MAR 2020</span>
+        <h3>Kitchen Staff</h3>
+        <p><strong>FIBONACCI - The Shrimp Bucket</strong></p>
+        <ul class="experience-desc">
+          <li>Collaborated in a fast-paced operational workflow system.</li>
+          <li>Managed inventory tracking and supply coordination efficiently.</li>
+          <li>Maintained structured process flow to improve service speed.</li>
+          <li>Developed multitasking and time-management skills.</li>
+        </ul>
+      </div>
+
+      <div class="project-item">
+        <img src="chowking.jpg" alt="Chowking" style="width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:15px;">
+        <span style="color: #666; font-size: 0.8rem; font-weight: bold;">2014 - 2019</span>
+        <h3>Kitchen Staff/Crew Trainor</h3>
+        <p><strong>Chowking</strong></p>
+        <ul class="experience-desc">
+          <li>Led standardized operational procedures.</li>
+          <li>Trained new staff using structured guidelines.</li>
+          <li>Improved workflow efficiency and reduced waiting time.</li>
+          <li>Demonstrated leadership and quality control practices.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <div class="content-wrapper">
+    <h2 style="text-align:center; margin-bottom: 30px;">Get In Touch</h2>
+
+    <div style="background:white; padding:40px; border-radius:15px; max-width:600px; margin:auto; text-align:center; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+
+      <p style="margin-bottom:25px; font-size:1.1rem;">
+        Feel free to reach out to me through the platforms below:
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:15px;">
+
+        
+        <a href="mailto:rholdrecto@gmail.com" 
+           style="background:#D44638; color:white; padding:15px; border-radius:10px; text-decoration:none; font-weight:bold;">
+           📧 Send me a Gmail
+        </a>
+
+        
+        <a href="mailto:princerholdrecto@yahoo.com" 
+           style="background:#6001D2; color:white; padding:15px; border-radius:10px; text-decoration:none; font-weight:bold;">
+           📩 Send me a Yahoo Mail
+        </a>
+
+        
+        <a href="https://www.facebook.com/harold.recto.94/" target="_blank"
+           style="background:#1877F2; color:white; padding:15px; border-radius:10px; text-decoration:none; font-weight:bold;">
+           👍 Visit my Facebook Profile
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<footer>
+ 
+ <p style="margin-bottom: 10px;">&copy; 2026 Harold Recto. All Rights Reserved.</p>
+  <a href="https://www.facebook.com/harold.recto.94/" target="_blank" style="color: #3b5998; background: white; padding: 5px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">Visit my Facebook</a>
+
+</footer>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    const target = document.getElementById(id); 
+    if(target) target.classList.add("active");
+    window.scrollTo(0,0);
+  }
+  let currentSlide = 0;
+  function showSlides(n) {
+    const slides = document.querySelectorAll(".slide");
+    if (n >= slides.length) currentSlide = 0;
+    if (n < 0) currentSlide = slides.length - 1;
+    slides.forEach(slide => slide.classList.remove("active"));
+    slides[currentSlide].classList.add("active");
+  }
+  function changeSlide(n) {
+    currentSlide += n;
+    showSlides(currentSlide);
+  }
+</script>
+</body>
+</html>
